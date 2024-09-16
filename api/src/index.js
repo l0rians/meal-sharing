@@ -5,20 +5,28 @@ import bodyParser from "body-parser";
 import knex from "./database_client.js";
 import nestedRouter from "./routers/nested.js";
 
+const handleNoMeals = (res) => {
+  res.status(404).json({ message: "No meals found" });
+};
+
 const app = express();
 app.use(cors());
 app.use(bodyParser.json());
 
 const apiRouter = express.Router();
 
-// You can delete this route once you add your own routes
-apiRouter.get("/", async (req, res) => {
-  const SHOW_TABLES_QUERY =
-    process.env.DB_CLIENT === "pg"
-      ? "SELECT * FROM pg_catalog.pg_tables;"
-      : "SHOW TABLES;";
-  const tables = await knex.raw(SHOW_TABLES_QUERY);
-  res.json({ tables });
+app.get("/future-meals", async (req, res) => {
+  try {
+    const now = new Date().toISOString();
+    const meals = await knex.raw("SELECT * FROM Meal WHERE `when` > ?", [now]);
+    res.json(meals[0]);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+app.get("/my-route", (req, res) => {
+  res.send("Hi friend");
 });
 
 // This nested router example can also be replaced with your own sub-router
