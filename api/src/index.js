@@ -25,6 +25,16 @@ app.get("/future-meals", async (req, res) => {
   }
 });
 
+app.get("/past-meals", async (req, res) => {
+  try {
+    const now = new Date().toISOString();
+    const meals = await knex.raw("SELECT * FROM Meal WHERE `when` < ?", [now]);
+    res.json(meals[0]);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
 app.get("/my-route", (req, res) => {
   res.send("Hi friend");
 });
