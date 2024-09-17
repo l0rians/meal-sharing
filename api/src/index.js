@@ -35,8 +35,13 @@ app.get("/past-meals", async (req, res) => {
   }
 });
 
-app.get("/my-route", (req, res) => {
-  res.send("Hi friend");
+app.get("/all-meals", async (req, res) => {
+  try {
+    const allMeals = await knex.raw("SELECT * FROM Meal ORDER BY id");
+    res.json(allMeals[0]);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
 });
 
 // This nested router example can also be replaced with your own sub-router
