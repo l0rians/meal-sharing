@@ -6,7 +6,7 @@ const router = express.Router();
 // router to get all the meals
 router.get("/", async (req, res, next) => {
   try {
-    const meals = await knex.select("*").from("Meal");
+    const meals = await knex.from("meal");
     res.json(meals);
   } catch (error) {
     next(error);
@@ -17,7 +17,7 @@ router.get("/", async (req, res, next) => {
 router.post("/", async (req, res, next) => {
   try {
     const newMeal = req.body;
-    const [mealId] = await knex("Meal").insert(newMeal);
+    const [mealId] = await knex("meal").insert(newMeal);
     res.status(201).json({ message: "Meal created", id: mealId });
   } catch (error) {
     next(error);
@@ -28,7 +28,7 @@ router.post("/", async (req, res, next) => {
 router.get("/:id", async (req, res, next) => {
   const { id } = req.params;
   try {
-    const meal = await knex("Meal").where({ id }).first();
+    const meal = await knex("meal").where({ id }).first();
     if (!meal) {
       return res.status(404).json({ error: "Meal not found" });
     }
@@ -43,7 +43,7 @@ router.put("/:id", async (req, res, next) => {
   const { id } = req.params;
   const newMeal = req.body;
   try {
-    const updatedMeal = await knex("Meal").where({ id }).update(newMeal);
+    const updatedMeal = await knex("meal").where({ id }).update(newMeal);
     if (!updatedMeal) {
       return res.status(404).json({ error: "Meal not found" });
     }
@@ -57,8 +57,8 @@ router.put("/:id", async (req, res, next) => {
 router.delete("/:id", async (req, res) => {
   const { id } = req.params;
   try {
-    const deletedRows = await knex("Meal").where({ id }).del();
-    if (!deletedRows) {
+    const deletedMeal = await knex("meal").where({ id }).del();
+    if (!deletedMeal) {
       return res.status(404).json({ error: "Meal not found" });
     }
     res.json({ message: "Meal deleted", id });

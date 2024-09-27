@@ -7,7 +7,7 @@ const router = express.Router();
 
 router.get("/", async (req, res, next) => {
   try {
-    const reservations = await knex.select("*").from("Reservation");
+    const reservations = await knex.from("reservation");
     res.json(reservations);
   } catch (error) {
     next(error);
@@ -18,7 +18,7 @@ router.get("/", async (req, res, next) => {
 router.post("/", async (req, res, next) => {
   try {
     const newReservation = req.body;
-    const [reservationId] = await knex("Reservation").insert(newReservation);
+    const [reservationId] = await knex("reservation").insert(newReservation);
     res.status(201).json({ message: "Reservation created", id: reservationId });
   } catch (error) {
     next(error);
@@ -29,7 +29,7 @@ router.post("/", async (req, res, next) => {
 router.get("/:id", async (req, res, next) => {
   const { id } = req.params;
   try {
-    const reservation = await knex("Reservation").where({ id }).first();
+    const reservation = await knex("reservation").where({ id }).first();
     if (!reservation) {
       return res.status(404).json({ error: "Reservation not found" });
     }
@@ -44,7 +44,7 @@ router.put("/:id", async (req, res, next) => {
   const { id } = req.params;
   const updatedReservation = req.body;
   try {
-    const updatedRows = await knex("Reservation")
+    const updatedRows = await knex("reservation")
       .where({ id })
       .update(updatedReservation);
     if (!updatedRows) {
@@ -60,7 +60,7 @@ router.put("/:id", async (req, res, next) => {
 router.delete("/:id", async (req, res, next) => {
   const { id } = req.params;
   try {
-    const deletedRows = await knex("Reservation").where({ id }).del();
+    const deletedRows = await knex("reservation").where({ id }).del();
     if (!deletedRows) {
       return res.status(404).json({ error: "Reservation not found" });
     }
