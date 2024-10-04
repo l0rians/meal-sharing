@@ -9,13 +9,11 @@ router.get("/", async (req, res, next) => {
     let query = knex("meal");
     if (req.query.maxPrice) {
       const maxPrice = parseInt(req.query.maxPrice);
-      console.log(`maxPrice: ${maxPrice}`);
       query = query.where("price", "<=", maxPrice);
     }
 
     if (req.query.availableReservations) {
       const available = req.query.availableReservations === "true";
-      console.log(`availableReservations: ${available}`);
       query = query
         .leftJoin("reservation", "meal.id", "reservation.meal_id")
         .groupBy("meal.id")
@@ -27,25 +25,21 @@ router.get("/", async (req, res, next) => {
 
     if (req.query.title) {
       const title = req.query.title;
-      console.log(`title: ${title}`);
       query = query.where("title", "like", `%${title}%`);
     }
 
     if (req.query.dateAfter) {
       const dateAfter = req.query.dateAfter;
-      console.log(`dateAfter: ${dateAfter}`);
       query = query.where("when", ">", dateAfter);
     }
 
     if (req.query.dateBefore) {
       const dateBefore = req.query.dateBefore;
-      console.log(`dateBefore: ${dateBefore}`);
       query = query.where("when", "<", dateBefore);
     }
 
     if (req.query.limit) {
       const limit = parseInt(req.query.limit);
-      console.log(`limit: ${limit}`);
       query = query.limit(limit);
     }
 
@@ -55,7 +49,6 @@ router.get("/", async (req, res, next) => {
         req.query.sortDir && req.query.sortDir.toLowerCase() === "desc"
           ? "desc"
           : "asc";
-      console.log(`sortKey: ${sortKey}, sortDir: ${sortDir}`);
       query = query.orderBy(sortKey, sortDir);
     }
 

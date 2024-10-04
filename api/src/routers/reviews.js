@@ -26,9 +26,7 @@ router.get("/meal/:meal_id", async (req, res, next) => {
 router.post("/", async (req, res, next) => {
   try {
     const newReview = req.body;
-
     const [reviewId] = await knex("review").insert(newReview);
-
     res.status(201).json({ message: "Review created", id: reviewId });
   } catch (error) {
     next(error);
@@ -40,7 +38,6 @@ router.get("/:id", async (req, res, next) => {
 
   try {
     const review = await knex("review").where({ id }).first();
-
     if (!review) {
       return res.status(404).json({ error: `Review with id ${id} not found` });
     }
@@ -53,7 +50,6 @@ router.get("/:id", async (req, res, next) => {
 router.put("/:id", async (req, res, next) => {
   const { id } = req.params;
   const updatedReview = req.body;
-
   try {
     const result = await knex("review").where({ id }).update(updatedReview);
     if (!result) {
