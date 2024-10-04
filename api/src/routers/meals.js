@@ -18,7 +18,7 @@ router.get("/", async (req, res, next) => {
         .leftJoin("reservation", "meal.id", "reservation.meal_id")
         .groupBy("meal.id")
         .select("meal.id", "meal.title", "meal.price", "meal.max_reservations")
-        .havingRaw(
+        .having(
           `meal.max_reservations - COUNT(reservation.id) ${available ? ">" : "="} 0`
         );
     }
