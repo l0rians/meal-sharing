@@ -3,16 +3,68 @@ import knex from "../database_client.js";
 
 const router = express.Router();
 
-// router to get all the meals
+// router to get all the meals with query parameters
 router.get("/", async (req, res, next) => {
   try {
-    const meals = await knex.from("meal");
+    let query = knex("meal");
+    if (req.query.maxPrice) {
+      const maxPrice = parseInt(req.query.maxPrice);
+      console.log(`maxPrice: ${maxPrice}`);
+      query = query.where("price", "<=", maxPrice);
+    }
+
+    if (req.query.availableReservations) {
+      const available = req.query.availableReservations === "true";
+      console.log(`availableReservations: ${available}`);
+      query = query
+        .leftJoin("reservation", "meal.id", "reservation.meal_id")
+        .groupBy("meal.id")
+        .select("meal.id", "meal.title", "meal.price", "meal.max_reservations")
+        .havingRaw(
+          `meal.max_reservations - COUNT(reservation.id) ${available ? ">" : "="} 0`
+        );
+    }
+
+    if (req.query.title) {
+      const title = req.query.title;
+      console.log(`title: ${title}`);
+      query = query.where("title", "like", `%${title}%`);
+    }
+
+    if (req.query.dateAfter) {
+      const dateAfter = req.query.dateAfter;
+      console.log(`dateAfter: ${dateAfter}`);
+      query = query.where("when", ">", dateAfter);
+    }
+
+    if (req.query.dateBefore) {
+      const dateBefore = req.query.dateBefore;
+      console.log(`dateBefore: ${dateBefore}`);
+      query = query.where("when", "<", dateBefore);
+    }
+
+    if (req.query.limit) {
+      const limit = parseInt(req.query.limit);
+      console.log(`limit: ${limit}`);
+      query = query.limit(limit);
+    }
+
+    if (req.query.sortKey) {
+      const sortKey = req.query.sortKey;
+      const sortDir =
+        req.query.sortDir && req.query.sortDir.toLowerCase() === "desc"
+          ? "desc"
+          : "asc";
+      console.log(`sortKey: ${sortKey}, sortDir: ${sortDir}`);
+      query = query.orderBy(sortKey, sortDir);
+    }
+
+    const meals = await query;
     res.json(meals);
   } catch (error) {
     next(error);
   }
 });
-
 // router to create a new meal
 router.post("/", async (req, res, next) => {
   try {
