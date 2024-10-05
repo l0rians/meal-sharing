@@ -5,8 +5,6 @@ const router = express.Router();
 
 // router to get all the meals with query parameters
 router.get("/", async (req, res, next) => {
-  console.log("Request to get all meals with query parameters");
-  console.log("Query parameters:", req.query);
   try {
     let query = knex("meal");
     if (req.query.maxPrice) {
@@ -14,13 +12,11 @@ router.get("/", async (req, res, next) => {
       if (isNaN(maxPrice) || maxPrice <= 0) {
         return res.status(400).json({ error: "Max price must be a number" });
       }
-      console.log("Filtering by max price:", maxPrice);
       query = query.where("price", "<=", maxPrice);
     }
 
     if (req.query.availableReservations) {
       const available = req.query.availableReservations === "true";
-      console.log("Filtering by available reservations:", available);
       query = query
         .leftJoin("reservation", "meal.id", "reservation.meal_id")
         .groupBy("meal.id")
