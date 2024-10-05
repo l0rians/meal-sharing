@@ -17,6 +17,13 @@ router.get("/meal/:meal_id", async (req, res, next) => {
   const { meal_id } = req.params;
   try {
     const reviews = await knex("review").where({ meal_id });
+
+    if (reviews.length === 0) {
+      return res
+        .status(404)
+        .json({ message: "No reviews found for this meal." });
+    }
+
     res.json(reviews);
   } catch (error) {
     next(error);
