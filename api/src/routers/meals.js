@@ -3,16 +3,77 @@ import knex from "../database_client.js";
 
 const router = express.Router();
 
-// router to get all the meals
+// router to get all the meals with query parameters
 router.get("/", async (req, res, next) => {
   try {
-    const meals = await knex.from("meal");
+    let query = knex("meal");
+    if (req.query.maxPrice) {
+      const maxPrice = parseInt(req.query.maxPrice);
+      if (isNaN(maxPrice) || maxPrice <= 0) {
+        return res.status(400).json({ error: "Max price must be a number" });
+      }
+      query = query.where("price", "<=", maxPrice);
+    }
+
+    if (req.query.availableReservations) {
+      const available = req.query.availableReservations === "true";
+      query = query
+        .leftJoin("reservation", "meal.id", "reservation.meal_id")
+        .groupBy("meal.id")
+        .select("meal.id", "meal.title", "meal.price", "meal.max_reservations")
+        .havingRaw(
+          `meal.max_reservations - COUNT(reservation.id) ${available ? ">" : "="} 0`
+        );
+    }
+    if (req.query.title) {
+      const title = req.query.title;
+      if (typeof title !== "string") {
+        return res.status(400).json({ error: "Title must be a string" });
+      }
+      query = query.where("title", "like", `%${title}%`);
+    }
+
+    if (req.query.dateAfter) {
+      const dateAfter = req.query.dateAfter;
+      if (isNaN(Date.parse(dateAfter))) {
+        return res.status(400).json({ error: "Invalid date for dateAfter" });
+      }
+      query = query.where("when", ">", dateAfter);
+    }
+
+    if (req.query.dateBefore) {
+      const dateBefore = req.query.dateBefore;
+      if (isNaN(Date.parse(dateBefore))) {
+        return res.status(400).json({ error: "Invalid date for dateBefore" });
+      }
+      query = query.where("when", "<", dateBefore);
+    }
+
+    if (req.query.limit) {
+      const limit = parseInt(req.query.limit);
+      if (isNaN(limit) || limit <= 0) {
+        return res
+          .status(400)
+          .json({ error: "Limit must be a positive number" });
+      }
+      query = query.limit(limit);
+    }
+
+    if (req.query.sortKey) {
+      const sortKey = req.query.sortKey;
+      const sortDir =
+        req.query.sortDir && req.query.sortDir.toLowerCase() === "desc"
+          ? "desc"
+          : "asc";
+      query = query.orderBy(sortKey, sortDir);
+    }
+
+    const meals = await query;
     res.json(meals);
   } catch (error) {
     next(error);
   }
 });
-
 // router to create a new meal
 router.post("/", async (req, res, next) => {
   try {

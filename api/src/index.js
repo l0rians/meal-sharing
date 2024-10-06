@@ -6,11 +6,13 @@ import knex from "./database_client.js";
 import nestedRouter from "./routers/nested.js";
 import mealsRouter from "./routers/meals.js";
 import reservationsRouter from "./routers/reservations.js";
+import reviewsRouter from "./routers/reviews.js";
 
 const app = express();
 app.use(express.json());
 app.use("/api/reservations", reservationsRouter);
 app.use("/api/meals", mealsRouter);
+app.use("/api/reviews", reviewsRouter);
 app.use(cors());
 app.use(bodyParser.json());
 
