@@ -1,0 +1,27 @@
+.meal {
+  background-color: white;
+  padding: 15px;
+  margin: 15px auto;
+  max-width: 600px;
+  border-radius: 10px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  border: 1px solid #e0e0e0;
+}
+
+.meal h3 {
+  font-size: 24px;
+  margin-bottom: 10px;
+  color: #333;
+}
+
+.meal p {
+  font-size: 16px;
+  margin: 5px 0;
+  color: #666;
+}
+
+.meal p.price {
+  font-size: 18px;
+  font-weight: bold;
+  color: #2d87f0;
+}
