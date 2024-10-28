@@ -1,0 +1,28 @@
+/* .link {
+  display: flex;
+  margin: 5vh 0;
+} */
+
+.logo,
+.message {
+  margin: auto;
+}
+.homepageContainer {
+  text-align: center;
+  padding: 20px;
+}
+
+.heading {
+  font-size: 32px;
+  margin-bottom: 20px;
+  font-weight: bold;
+  color: #333;
+}
+
+.container {
+  display: grid;
+  gap: 15px;
+  padding: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+}

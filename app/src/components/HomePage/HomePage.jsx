@@ -1,19 +1,17 @@
+"use client";
 import React from "react";
-import hyfLogo from "../../assets/hyf.svg";
-import "./HomePage.css";
+import MealsList from "../MealsList";
+import styles from "./HomePage.module.css";
 
-// Feel free to replace the content of this component with your own
-function HomePage() {
+const HomePage = () => {
   return (
     <>
-      <a href="https://www.hackyourfuture.dk/" target="_blank" className="link">
-        <img src={hyfLogo} alt="HackYourFuture logo" className="logo" />
-      </a>
-      <a href="/nested" className="link">
-        <span className="message">Go to the nested page</span>
-      </a>
+      <div className={styles.homepageContainer}>
+        <h1 className={styles.heading}>Welcome to Meal Sharing</h1>
+        <MealsList />
+      </div>
     </>
   );
-}
+};
 
 export default HomePage;

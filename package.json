@@ -1,0 +1,12 @@
+{
+  "name": "meal-sharing",
+  "version": "1.0.0",
+  "description": "<img src=\"./images/hyf.svg\" alt=\"image\" width=\"200px\" height=\"200px\">",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
