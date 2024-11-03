@@ -1,5 +1,3 @@
-"use client";
-
 import React, { useEffect, useState } from "react";
 import Meal from "./Meal";
 import styles from "./MealsList.module.css";
