@@ -1,6 +1,5 @@
-"use client";
-
 import React, { useEffect, useState } from "react";
+import Meal from "./Meal";
 import styles from "./MealsList.module.css";
 const MealsList = () => {
   const [meals, setMeals] = useState([]);
@@ -22,17 +21,9 @@ const MealsList = () => {
   }, []);
 
   return (
-    <div className={styles.container}>
+    <div className={styles.gridContainer}>
       {meals.length ? (
-        meals.map((meal) => {
-          return (
-            <div className={styles.meal} key={meal.id}>
-              <h3>{meal.title}</h3>
-              <p className={styles.description}>{meal.description}</p>
-              <p className={styles.price}>Price: {meal.price}</p>
-            </div>
-          );
-        })
+        meals.map((meal) => <Meal key={meal.id} meal={meal} />)
       ) : (
         <p>No meals available.</p>
       )}
