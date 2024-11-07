@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Meal from "./Meal";
 import styles from "./MealsList.module.css";
-const MealsList = () => {
+const MealsList = ({ limit }) => {
   const [meals, setMeals] = useState([]);
 
   useEffect(() => {
@@ -20,10 +20,12 @@ const MealsList = () => {
     fetchMeals();
   }, []);
 
+  const displayMeals = limit ? meals.slice(0, limit) : meals;
+
   return (
     <div className={styles.gridContainer}>
-      {meals.length ? (
-        meals.map((meal) => <Meal key={meal.id} meal={meal} />)
+      {displayMeals.length ? (
+        displayMeals.map((meal) => <Meal key={meal.id} meal={meal} />)
       ) : (
         <p>No meals available.</p>
       )}
