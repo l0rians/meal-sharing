@@ -28,6 +28,56 @@ const errorHandler = (err, req, res, next) => {
 
 const apiRouter = express.Router();
 
+app.post("/api/reservations", async (req, res, next) => {
+  try {
+    const {
+      meal_id,
+      contact_phonenumber,
+      contact_name,
+      contact_email,
+      number_of_guests,
+    } = req.body;
+    console.log("Received reservation data:", req.body);
+
+    const newReservation = await knex("Reservations").insert({
+      meal_id,
+      contact_phonenumber,
+      contact_name,
+      contact_email,
+      number_of_guests,
+    });
+
+    res
+      .status(200)
+      .json({ message: "Reservation created successfully", newReservation });
+  } catch (error) {
+    console.error("Error in reservations:", error.message);
+    next(error);
+  }
+});
+
+app.post("/api/reviews", async (req, res, next) => {
+  try {
+    const { meal_id, title, description, stars, created_date } = req.body;
+    console.log("Received review data:", req.body);
+
+    const newReview = await knex("Reviews").insert({
+      meal_id,
+      title,
+      description,
+      stars,
+      created_date,
+    });
+
+    res
+      .status(200)
+      .json({ message: "Review submitted successfully", newReview });
+  } catch (error) {
+    console.error("Error in reviews:", error.message);
+    next(error);
+  }
+});
+
 app.get("/future-meals", async (req, res, next) => {
   try {
     const now = new Date().toISOString();
