@@ -6,13 +6,17 @@ const MealsList = ({ limit }) => {
   const [meals, setMeals] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [filteredMeals, setFilteredMeals] = useState([]);
+  const [sortKey, setSortKey] = useState("title");
+  const [sortDir, setSortDir] = useState("asc");
   const location = useLocation();
 
   useEffect(() => {
     const fetchMeals = async () => {
       console.log("Calling fetchMeals");
       try {
-        const response = await fetch("http://localhost:3001/api/meals");
+        const response = await fetch(
+          `http://localhost:3001/api/meals?sortKey=${sortKey}&sortDir=${sortDir}`
+        );
         const data = await response.json();
 
         setMeals(data);
@@ -23,7 +27,7 @@ const MealsList = ({ limit }) => {
     };
 
     fetchMeals();
-  }, []);
+  }, [sortKey, sortDir]);
 
   const handleSearch = () => {
     const filtered = meals.filter((meal) =>
@@ -31,11 +35,19 @@ const MealsList = ({ limit }) => {
     );
     setFilteredMeals(filtered);
   };
-
-  const displayMeals = limit ? filteredMeals.slice(0, limit) : filteredMeals;
   const handleSearchChange = (e) => {
     setSearchTerm(e.target.value);
   };
+
+  const handleSortKeyChange = (e) => {
+    setSortKey(e.target.value);
+  };
+
+  const handleSortDirChange = (e) => {
+    setSortDir(e.target.value);
+  };
+
+  const displayMeals = limit ? filteredMeals.slice(0, limit) : filteredMeals;
 
   if (location.pathname !== "/meals") {
     return (
@@ -59,6 +71,19 @@ const MealsList = ({ limit }) => {
             placeholder="Search by title"
           />
           <button onClick={handleSearch}>Search</button>
+        </div>
+        <div className={styles.sortBox}>
+          <label htmlFor="sortKey">Sort By: </label>
+          <select id="sortKey" value={sortKey} onChange={handleSortKeyChange}>
+            <option value="title">Title</option>
+            <option value="price">Price</option>
+          </select>
+
+          <label htmlFor="sortDir">Direction: </label>
+          <select id="sortDir" value={sortDir} onChange={handleSortDirChange}>
+            <option value="asc">Ascending</option>
+            <option value="desc">Descending</option>
+          </select>
         </div>
       </div>
       <div className={styles.gridContainer}>
