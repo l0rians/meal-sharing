@@ -146,32 +146,6 @@ app.get(
     res.json(req.data);
   }
 );
-app.get("/api/meals/:id", async (req, res, next) => {
-  try {
-    const { id } = req.params;
-
-    const meal = await knex("Meal").where({ id }).first();
-
-    if (!meal) {
-      return res.status(404).json({ message: "Meal not found" });
-    }
-
-    const totalReservations = await knex("Reservations")
-      .where({ meal_id: id })
-      .sum("number_of_guests as total")
-      .first();
-
-    const availableReservations =
-      meal.max_reservations - (totalReservations.total || 0);
-
-    res.json({
-      ...meal,
-      availableReservations,
-    });
-  } catch (error) {
-    next(error);
-  }
-});
 
 // This nested router example can also be replaced with your own sub-router
 apiRouter.use("/nested", nestedRouter);
