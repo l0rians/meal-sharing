@@ -61,7 +61,7 @@ const MealDetail = () => {
       });
 
       if (response.ok) {
-        setMessage("Reservation successfully created!");
+        alert("Reservation successfully created!");
         setMeal((prevMeal) => ({
           ...prevMeal,
           max_reservations:
@@ -111,7 +111,7 @@ const MealDetail = () => {
       });
 
       if (response.ok) {
-        setMessage("Review successfully submitted!");
+        alert("Review successfully submitted!");
         setReview({ title: "", comment: "", rating: "" });
       } else {
         alert("Failed to submit review.");
