@@ -1,0 +1,105 @@
+.mealDetailContainer {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.title {
+  font-size: 2rem;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 15px;
+}
+
+.description {
+  font-size: 1rem;
+  color: #555;
+  margin-bottom: 15px;
+}
+
+.price {
+  font-size: 1.2rem;
+  color: #007bff;
+  margin-bottom: 15px;
+}
+
+.reservations {
+  font-size: 1rem;
+  color: #333;
+  margin-bottom: 20px;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.input {
+  padding: 10px;
+  border-radius: 4px;
+  border: 1px solid #ddd;
+  font-size: 1rem;
+}
+
+.button {
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background-color 0.3s ease;
+}
+
+.button:hover {
+  background-color: #0056b3;
+}
+
+.noSeats {
+  color: #ff0000;
+  font-weight: bold;
+}
+
+.toggleReviewButton {
+  background-color: #28a745;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-top: 20px;
+  font-size: 1rem;
+  border: none;
+  transition: background-color 0.3s ease;
+}
+
+.toggleReviewButton:hover {
+  background-color: #218838;
+}
+
+.reviewForm {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.textarea {
+  padding: 10px;
+  border-radius: 4px;
+  border: 1px solid #ddd;
+  font-size: 1rem;
+  height: 120px;
+  resize: vertical;
+}
+
+.message {
+  color: green;
+  font-size: 1rem;
+  font-weight: bold;
+  margin-top: 20px;
+}

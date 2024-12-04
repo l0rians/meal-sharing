@@ -1,6 +1,6 @@
-"use client";
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import styles from "./MealDetail.module.css";
 
 const MealDetail = () => {
   const { id } = useParams();
@@ -131,14 +131,16 @@ const MealDetail = () => {
   }
 
   return (
-    <div>
-      <h1>{meal.title}</h1>
-      <p>{meal.description}</p>
-      <p>Price: ${meal.price}</p>
-      <p>Available reservations: {meal.max_reservations}</p>
+    <div className={styles.mealDetailContainer}>
+      <h1 className={styles.title}>{meal.title}</h1>
+      <p className={styles.description}>{meal.description}</p>
+      <p className={styles.price}>Price: ${meal.price}</p>
+      <p className={styles.reservations}>
+        Available reservations: {meal.max_reservations}
+      </p>
 
       {meal.max_reservations > 0 ? (
-        <form onSubmit={handleReservationSubmit}>
+        <form onSubmit={handleReservationSubmit} className={styles.form}>
           <input
             type="text"
             name="phonenumber"
@@ -146,6 +148,7 @@ const MealDetail = () => {
             onChange={handleInputChange}
             placeholder="Phone Number"
             required
+            className={styles.input}
           />
           <input
             type="text"
@@ -154,6 +157,7 @@ const MealDetail = () => {
             onChange={handleInputChange}
             placeholder="Name"
             required
+            className={styles.input}
           />
           <input
             type="email"
@@ -162,6 +166,7 @@ const MealDetail = () => {
             onChange={handleInputChange}
             placeholder="Email"
             required
+            className={styles.input}
           />
           <input
             type="number"
@@ -172,18 +177,21 @@ const MealDetail = () => {
             min="1"
             max={meal.max_reservations}
             required
+            className={styles.input}
           />
-          <button type="submit">Book Seat</button>
+          <button type="submit" className={styles.button}>
+            Book Seat
+          </button>
         </form>
       ) : (
-        <p>No seats available.</p>
+        <p className={styles.noSeats}>No seats available.</p>
       )}
 
-      <button onClick={toggleReviewForm}>
+      <button onClick={toggleReviewForm} className={styles.toggleReviewButton}>
         {showReviewForm ? "Hide Review Form" : "Leave a Review"}
       </button>
       {showReviewForm && (
-        <form onSubmit={handleReviewSubmit}>
+        <form onSubmit={handleReviewSubmit} className={styles.reviewForm}>
           <input
             type="text"
             name="title"
@@ -191,6 +199,7 @@ const MealDetail = () => {
             onChange={handleReviewInputChange}
             placeholder="Review Title"
             required
+            className={styles.input}
           />
           <textarea
             name="comment"
@@ -198,6 +207,7 @@ const MealDetail = () => {
             onChange={handleReviewInputChange}
             placeholder="Your Review"
             required
+            className={styles.textarea}
           ></textarea>
           <input
             type="number"
@@ -208,12 +218,15 @@ const MealDetail = () => {
             min="1"
             max="5"
             required
+            className={styles.input}
           />
-          <button type="submit">Submit Review</button>
+          <button type="submit" className={styles.button}>
+            Submit Review
+          </button>
         </form>
       )}
 
-      {message && <p>{message}</p>}
+      {message && <p className={styles.message}>{message}</p>}
     </div>
   );
 };
